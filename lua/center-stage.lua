@@ -1,0 +1,1 @@
+require("center-stage").setup()
