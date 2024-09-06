@@ -6,7 +6,13 @@ A Neovim plugin that keeps your cursor at the center stage 24/7 (if you enable i
 
 Using Lazy:
 ```Lua
-{ "confusedkernel/center-stage.nvim" }
+{
+    "confusedkernel/center-stage.nvim",
+        branch = "master",
+        opts = {
+            enabled = true,
+    },
+}
 ```
 
 Using Packer:
