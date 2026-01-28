@@ -3,42 +3,26 @@
 local M = {}
 local api = vim.api
 
-local center_stage = false
+local config = require("center-stage.config")
+local commands = require("center-stage.commands")
 
-function M.center_cursor()
-	local cursor = api.nvim_win_get_cursor(0)
-	api.nvim_command("normal! zz")
-	api.nvim_win_set_cursor(0, cursor)
-end
+M.center_cursor = commands.center_cursor
+M.cs_enable = commands.enable
+M.cs_disable = commands.disable
+M.cs_toggle = commands.toggle
+M.cc_enable = commands.enable
+M.cc_disable = commands.disable
+M.cc_toggle = commands.toggle
 
-function M.cc_enable()
-	center_stage = true
-	api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-		pattern = "*",
-		callback = M.center_cursor,
-		group = api.nvim_create_augroup("CenterStage", { clear = true }),
-	})
-	print("Center stage enabled.")
-end
 
-function M.cc_disable()
-	center_stage = false
-	api.nvim_clear_autocmds({ group = "CenterStage" })
-	print("Center stage disabled.")
-end
-
-function M.cc_toggle()
-	if center_stage then
-		M.cc_disable()
-	else
-		M.cc_enable()
+function M.setup(opts)
+	config.setup(opts)
+	api.nvim_create_user_command("CSEnable", M.cc_enable, {})
+	api.nvim_create_user_command("CSDisable", M.cc_disable, {})
+	api.nvim_create_user_command("CSToggle", M.cc_toggle, {})
+	if config.get().enabled then
+		M.cc_enable(true)
 	end
-end
-
-function M.setup()
-	api.nvim_create_user_command("CCEnable", M.cc_enable, {})
-	api.nvim_create_user_command("CCDisable", M.cc_disable, {})
-	api.nvim_create_user_command("CCToggle", M.cc_toggle, {})
 end
 
 return M
