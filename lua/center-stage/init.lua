@@ -15,11 +15,22 @@ M.cc_disable = commands.disable
 M.cc_toggle = commands.toggle
 
 
+function M.create_commands()
+	-- Wrap callbacks so the command's opts table isn't passed as `quiet`
+	api.nvim_create_user_command("CSEnable", function()
+		M.cs_enable()
+	end, {})
+	api.nvim_create_user_command("CSDisable", function()
+		M.cs_disable()
+	end, {})
+	api.nvim_create_user_command("CSToggle", function()
+		M.cs_toggle()
+	end, {})
+end
+
 function M.setup(opts)
 	config.setup(opts)
-	api.nvim_create_user_command("CSEnable", M.cc_enable, {})
-	api.nvim_create_user_command("CSDisable", M.cc_disable, {})
-	api.nvim_create_user_command("CSToggle", M.cc_toggle, {})
+	M.create_commands()
 	if config.get().enabled then
 		M.cc_enable(true)
 	end
