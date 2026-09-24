@@ -17,7 +17,12 @@ Using Lazy:
 
 Using Packer:
 ```Lua
-use "confusedkernel/center-stage.nvim"
+use {
+    "confusedkernel/center-stage.nvim",
+    config = function()
+        require("center-stage").setup({ enabled = true })
+    end,
+}
 ```
 
 ## Options

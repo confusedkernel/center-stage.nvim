@@ -37,8 +37,12 @@ function M.setup(opts)
 	config.ignore_filetypes = filter_strings(normalize_list(config.ignore_filetypes))
 	if #config.center_on == 0 then
 		config.center_on = defaults.center_on
-		vim.notify("center-stage: center_on must be a string or list of event names; using defaults", vim.log.levels.WARN)
+		vim.notify(
+			"center-stage: center_on must be a string or list of event names; using defaults",
+			vim.log.levels.WARN
+		)
 	end
+	-- NaN is the only value not equal to itself
 	if type(config.offset) ~= "number" or config.offset ~= config.offset then
 		config.offset = defaults.offset
 		vim.notify("center-stage: offset must be a number; using 0", vim.log.levels.WARN)
