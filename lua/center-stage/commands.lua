@@ -46,15 +46,15 @@ local function should_ignore(cfg)
 end
 
 function M.center_cursor()
-	local cfg = config.get()
+	local offset = config.offset_rows(config.get().offset, api.nvim_win_get_height(0))
 	-- `zz` counts screen rows, so wrapped lines and folds are handled
 	vim.cmd("normal! zz")
-	if cfg.offset == 0 then
+	if offset == 0 then
 		return
 	end
 	local view = vim.fn.winsaveview()
 	-- Keep the cursor line in view: topline can't pass it or go above line 1
-	view.topline = math.min(math.max(1, view.topline + cfg.offset), view.lnum)
+	view.topline = math.min(math.max(1, view.topline + offset), view.lnum)
 	view.topfill = 0
 	vim.fn.winrestview(view)
 end

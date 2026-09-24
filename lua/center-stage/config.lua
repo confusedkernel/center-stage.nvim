@@ -39,7 +39,20 @@ function M.setup(opts)
 		config.center_on = defaults.center_on
 		vim.notify("center-stage: center_on must be a string or list of event names; using defaults", vim.log.levels.WARN)
 	end
+	if type(config.offset) ~= "number" or config.offset ~= config.offset then
+		config.offset = defaults.offset
+		vim.notify("center-stage: offset must be a number; using 0", vim.log.levels.WARN)
+	end
 	return config
+end
+
+-- Offsets between -1 and 1 are a fraction of the window height
+function M.offset_rows(offset, win_height)
+	if offset ~= 0 and math.abs(offset) < 1 then
+		local rows = math.floor(win_height * math.abs(offset) + 0.5)
+		return offset < 0 and -rows or rows
+	end
+	return math.floor(offset)
 end
 
 function M.get()
